@@ -1,7 +1,7 @@
 import Application from '../core/Application';
 import MyHTMLGrid from './MyHTMLGrid';
 
-class MyApp extends Application {
+export default class MyApp extends Application {
 	private activeControl = null;
 	private controls = [];
 	private grid = new MyHTMLGrid('my-grid');
@@ -78,9 +78,3 @@ class MyApp extends Application {
 		return false;
 	}
 }
-
-
-export default MyApp;
-
-
-// www://'.DuneSystem::$properties['plugin_www_url'].'index.html:::fullscreen=1&webapp_keys=2&zoom_level=100&overcan=0&osd_size=1280x720&background_color=black&input_handler=0&navigation_highlight=0&engine_flags=1&exit_key=KEY_STOP,KEY_TOP_MENU
