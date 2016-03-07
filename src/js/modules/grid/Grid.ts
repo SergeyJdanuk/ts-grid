@@ -177,7 +177,8 @@ export default class Grid extends Control {
 			rowY = rowPos.y,
 			rowHeight = next.data.getHeight(),
 			height = this.getHeight(),
-			needUpdateFirstVisibleRow = false;
+			needUpdateFirstVisibleRow = false,
+			fromY = pos.y;
 
 		if ((pos.y - height) * -1 < rowY + rowHeight && rowY + rowHeight > height) {
 			pos.y -= rowHeight;
@@ -190,7 +191,7 @@ export default class Grid extends Control {
 
 		this.setPosition(pos.x, pos.y)
 		
-		this.update().then(() => {
+		this.update(fromY, pos.y).then(() => {
 			if (needUpdateFirstVisibleRow) {
 				let row = this.getFirstVisibleRow();
 				if (row)
@@ -220,7 +221,8 @@ export default class Grid extends Control {
 			rowY = rowPos.y,
 			rowHeight = prev.data.getHeight(),
 			height = this.getHeight(),
-			needUpdateLastVisibleRow = false;;
+			needUpdateLastVisibleRow = false,
+			fromY = pos.y;
 
 		if (rowY + pos.y < 0) {
 			pos.y += rowHeight;
@@ -233,7 +235,7 @@ export default class Grid extends Control {
 
 		this.setPosition(pos.x, pos.y)
 
-		this.update().then(() => {
+		this.update(fromY, pos.y).then(() => {
 			if (needUpdateLastVisibleRow) {
 				let row = this.getLastVisibleRow();
 				if (row)
@@ -243,9 +245,8 @@ export default class Grid extends Control {
 			this.focusInRow(prev, selectedVisibleIndex);
 		});
 	}
-	public update(): any {
-		throw "Not implemented";
-		
+	public update(fromX: number, toX: number): any {
+		throw 'Not implemented';
 	}
 	public render() {
 		let node = this.getFirstVisibleRow(),
@@ -255,7 +256,7 @@ export default class Grid extends Control {
 			return;
 
 		while (node) {
-			node.data.render()
+			node.data.render();
 
 			if (node == last)
 				break

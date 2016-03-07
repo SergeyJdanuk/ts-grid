@@ -177,7 +177,8 @@ export default class Row {
 			cellX = cellPos.x,
 			cellWidth = next.data.getWidth(),
 			width = this.grid.getWidth(),
-			needUpdateFirstVisibleCell = false;
+			needUpdateFirstVisibleCell = false,
+			fromX = pos.x;
 
 		if ( (pos.x - width) * -1 < cellX + cellWidth && cellX + cellWidth > width) {
 			pos.x -= cellWidth;
@@ -192,7 +193,7 @@ export default class Row {
 
 		this.setPosition(pos.x, pos.y);
 
-		this.update().then((code) => {
+		this.update(fromX, pos.x).then(() => {
 			if (needUpdateFirstVisibleCell) {
 				let cell = this.getFirstVisibleCell();
 				if (cell)
@@ -215,7 +216,8 @@ export default class Row {
 			cellX = cellPos.x,
 			cellWidth = prev.data.getWidth(),
 			width = this.grid.getWidth(),
-			needUpdateLastVisibleCell = false;
+			needUpdateLastVisibleCell = false,
+			fromX = pos.x;
 
 		if (cellX + pos.x < 0) {
 			pos.x += cellWidth;
@@ -230,7 +232,7 @@ export default class Row {
 
 		this.setPosition(pos.x, pos.y)
 		
-		this.update().then((code) => {
+		this.update(fromX, pos.x).then((code) => {
 			if (needUpdateLastVisibleCell) {
 				let cell = this.getLastVisibleCell();
 				if (cell)
@@ -240,10 +242,10 @@ export default class Row {
 			this.focusInCell(prev);
 		});
 	}
-	public update(): any {
+	public update(fromX: number, toX: number): any {
 		throw 'Not implemented';
 	}
-	public render() {
+	public render(value?: any) {
 		let cell = this.getFirstVisibleCell(),
 			last = this.getLastVisibleCell();
 

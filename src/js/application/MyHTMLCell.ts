@@ -32,7 +32,6 @@ export default class MyCell extends Cell {
 		let div = document.createElement('div'),
 			pos = this.getPosition();
 
-
 		div.setAttribute('class', 'cell-container' + (this.focused ? ' focused' : ''));
 		div.style.position = 'absolute';
 		div.style.width = this.getWidth() + 'px';
@@ -41,9 +40,9 @@ export default class MyCell extends Cell {
 		div.style.top = pos.y + 'px';
 		div.style.color = 'white';
 
-		div.innerHTML = 'x: ' + pos.x + ', y: ' + pos.y;
 		div.style.backgroundImage = 'url("' + this.data.url + '")';
 		div.style.backgroundSize = 'cover';
+		
 		this.row.getElement().appendChild(div);
 		this.container = div;
 	}

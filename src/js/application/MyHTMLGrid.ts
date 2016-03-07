@@ -1,4 +1,4 @@
-import FlickrDataSource from './FlickrDataSource'
+import DataSourceDriver from './DataSourceDriver'
 import Promise from 'ts-promise'
 import Grid from '../modules/grid/Grid'
 import KeyCodes  from '../keycodes'
@@ -8,7 +8,7 @@ import MyHTMLCell from './MyHTMLCell'
 import Animation from '../core/Animation'
 
 export default class MyHTMLGrid extends Grid {
-	private dataSource = new FlickrDataSource('29096781@N02');
+	private dataSource = new DataSourceDriver('29096781@N02');
 	private container = null;
 	protected width = 1274;
 	protected height = 720;

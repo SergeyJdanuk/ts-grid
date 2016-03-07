@@ -1,10 +1,11 @@
 import Application from '../core/Application';
 import MyHTMLGrid from './MyHTMLGrid';
+import MyCanvasGrid from './MyCanvasGrid';
 
 export default class MyApp extends Application {
 	private activeControl = null;
 	private controls = [];
-	private grid = new MyHTMLGrid('my-grid');
+	private grid = new MyCanvasGrid('my-grid');
 
 	constructor() {
 		super(); 

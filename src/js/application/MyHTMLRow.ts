@@ -27,15 +27,15 @@ export default class MyHTMLRow extends Row {
 		
 		this.container = null;
 	}
-	public update() {
+	public update(fromX: number, toX: number): any {
+		if (fromX == toX)
+			return { then: function(cb) { cb() } };
+
 		let el = this.getElement(),
 			f = parseInt(el.style.left, 10),
 			to = this.getPosition().x;
 
 		let promise = new Promise( (resolve, reject) => {
-			if (f == to)
-				return resolve(1);
-
 			this.isAnimation = true;
 			
 			Animation(f, to, 280, (result, progress) => {
