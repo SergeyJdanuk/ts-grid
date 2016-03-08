@@ -31,7 +31,7 @@ export default class MyCanvasCell extends Cell {
             height = this.img.height,
             halfRectWidth = ~~(rect.w / 2),
             halfRectHeight = ~~(rect.h / 2),
-            zoom = .76,
+            zoom = .90,
             newWidth = ~~(rect.w * zoom),
             newHeight = ~~(rect.h * zoom),
             halfNewWidth = ~~(newWidth / 2),

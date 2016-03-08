@@ -7,7 +7,7 @@ import MyCanvasRow from './MyCanvasRow'
 import MyCanvasCell from './MyCanvasCell'
 import Animation from '../core/Animation'
 
-export default class MyHTMLGrid extends Grid {
+export default class MyCanvasGrid extends Grid {
     private dataSource = new DataSourceDriver('29096781@N02');
     private container = null;
     protected width = 1274;
