@@ -39,7 +39,8 @@ export default class MyCanvasCell extends Cell {
             x = rect.x + halfRectWidth - halfNewWidth - 2,
             y = rect.y + halfRectHeight - halfNewHeight - 3;
 
-        c.drawImage(this.img, 0, 0, width, height, x, y, newWidth, newHeight);
+        if (this.img.width)
+            c.drawImage(this.img, 0, 0, width, height, x, y, newWidth, newHeight);
     }
     public renderFocusedRect(rect) {
         let c = this.row.getContext(),
