@@ -30,11 +30,6 @@ export default class MyApp extends Application {
 
 		this.addControl(this.menu);
 		this.focusInControl('menu')
-		// this.focusInControl('my-grid');
-		// this.grid.on('loading:end', () => {
-		// 	this.grid.render();
-		// })
-		// this.grid.load();
 	}
 
 	public initializeEvents() {
@@ -66,7 +61,7 @@ export default class MyApp extends Application {
 		grid.load();
 	}
 	public createCanvasGrid() {
-		let grid = new MyHTMLGrid('canvas-grid');
+		let grid = new MyCanvasGrid('canvas-grid');
 		this.addControl(grid);
 		this.focusInControl('canvas-grid')
 		grid.on('loading:end', () => {
