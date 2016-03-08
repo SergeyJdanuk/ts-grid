@@ -254,7 +254,7 @@ export default class Row {
     public update(fromX: number, toX: number): any {
         throw 'Not implemented';
     }
-    public render(value?: any) {
+    public render() {
         let cell = this.getFirstVisibleCell(),
             last = this.getLastVisibleCell();
 

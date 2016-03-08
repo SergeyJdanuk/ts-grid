@@ -49,7 +49,7 @@ export default class Cell {
         throw 'Not implements';
     }
     public render() {
-        throw 'Not implements'; 
+        throw 'Not implements';
     }
     public handleKeydown(event) {
         switch (event.keyCode) {
