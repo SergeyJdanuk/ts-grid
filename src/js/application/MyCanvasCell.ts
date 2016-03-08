@@ -6,16 +6,16 @@ export default class MyCanvasCell extends Cell {
 	private container = null;
 	private img = null;
 
-	show() {
+	public show() {
 		this.render();
 	}
-	hide() {
+	public hide() {
 		
 	}
-	update() {
+	public update() {
 		this.render();
 	}
-	renderImage(rect) {
+	public renderImage(rect) {
 		let c = this.row.getContext();
 
 		if (!this.img) {
@@ -41,7 +41,7 @@ export default class MyCanvasCell extends Cell {
 
 		c.drawImage(this.img, 0, 0, width, height, x, y, newWidth, newHeight);
 	}
-	renderFocusedRect(rect) {
+	public renderFocusedRect(rect) {
 		let c = this.row.getContext(),
 			lineWidth = 10,
 			halfLineWidth = ~~(lineWidth / 2);
@@ -50,7 +50,7 @@ export default class MyCanvasCell extends Cell {
 		c.strokeStyle = '#6666FF';
 		c.strokeRect(rect.x + halfLineWidth, rect.y + halfLineWidth, rect.w - lineWidth - halfLineWidth, rect.h - lineWidth - halfLineWidth);
 	}
-	render() {
+	public render() {
 		let c = this.row.getContext(),
 			width = this.getWidth(),
 			height = this.getHeight(),

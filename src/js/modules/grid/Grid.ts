@@ -89,6 +89,9 @@ export default class Grid extends Control {
 		return row ? row.prev : null;
 	}
 	public loadNext() {}
+	public onPressed(cell) {
+		this.fire('pressed', [cell])
+	}
 	public focusIn() {
 		super.focusIn();
 		let row = this.getSelectedRow();
@@ -132,9 +135,8 @@ export default class Grid extends Control {
 				return this.onKeyDown();
 			case KeyCodes.UP:
 				return this.onKeyUp();
-			default: {
+			default:
 				row.data.handleKeydown(event);
-			}
 		}	
 	}
 	public appendRow(data:any) {

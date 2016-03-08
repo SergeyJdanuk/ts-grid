@@ -1,3 +1,4 @@
+import KeyCodes from '../../keycodes'
 import Row from './Row'
 
 export default class Cell {
@@ -26,6 +27,9 @@ export default class Cell {
 	public getHeight(): number {
 		return this.height;
 	}
+	public getData() {
+		return this.data;
+	}
 	public focusIn() {
 		this.focused = true;
 		this.update();
@@ -46,5 +50,14 @@ export default class Cell {
 	}
 	public render() {
 		throw 'Not implements';	
+	}
+	public handleKeydown(event) {
+		switch (event.keyCode) {
+			case KeyCodes.ENTER:
+				this.onKeyEnter();
+		}
+	}
+	public onKeyEnter() {
+		this.row.onPressed(this);
 	}
 }

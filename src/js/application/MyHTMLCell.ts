@@ -3,20 +3,20 @@ import Cell from '../modules/grid/Cell'
 
 export default class MyCell extends Cell {
 	protected row: MyHTMLRow;
-	private container = null;
+	protected container = null;
 
-	show() {
+	public show() {
 		if (this.container)
 			return;
 		this.render();
 	}
-	hide() {
+	public hide() {
 		if (!this.container)
 			return;
 		this.container.parentNode.removeChild(this.container)
 		this.container = null;
 	}
-	update() {
+	public update() {
 		if (!this.container)
 			return;
 		let className = this.container.className;
@@ -28,7 +28,7 @@ export default class MyCell extends Cell {
 		if (this.container.className != className)
 			this.container.className = className;
 	}
-	render() {
+	public render() {
 		let div = document.createElement('div'),
 			pos = this.getPosition();
 

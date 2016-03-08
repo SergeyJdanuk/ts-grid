@@ -9,7 +9,8 @@ import Animation from '../core/Animation'
 
 export default class MyHTMLGrid extends Grid {
 	private dataSource = new DataSourceDriver('29096781@N02');
-	private container = null;
+	protected container = null;
+	protected contentEl = null;
 	protected width = 1274;
 	protected height = 720;
 	protected rowHeight = 240;
@@ -26,6 +27,9 @@ export default class MyHTMLGrid extends Grid {
 	}
 	public getContainer(): any {
 		return this.container;
+	}
+	public getContentElement(): any {
+		return this.contentEl;
 	}
 	public getChunk() {
 		return this.dataSource.getPhotos();
@@ -60,7 +64,7 @@ export default class MyHTMLGrid extends Grid {
 		});
 	}
 	public update() {
-		let el = this.getElement(),
+		let el = this.getContentElement(),
 			f = parseInt(el.style.top, 10),
 			to = this.getPosition().y;
 
@@ -106,7 +110,8 @@ export default class MyHTMLGrid extends Grid {
 		else
 			parent.appendChild(div);
 
-		this.container = content;
+		this.container = div;
+		this.contentEl = content;
 
 		super.render();
 	}

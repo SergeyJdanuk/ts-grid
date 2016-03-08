@@ -158,11 +158,17 @@ export default class Row {
 		if (this.isAnimation)
 			return;
 		
+		let cell = this.getFocusedCell();
+		if (!cell)
+			return
+
 		switch (event.keyCode) {
 			case KeyCodes.RIGHT:
 				return this.onKeyRight();
 			case KeyCodes.LEFT:
 				return this.onKeyLeft();
+			default:
+				cell.data.handleKeydown(event);
 		}
 	}
 	public onKeyRight() {
@@ -241,6 +247,9 @@ export default class Row {
 			}
 			this.focusInCell(prev);
 		});
+	}
+	public onPressed(cell) {
+		this.grid.onPressed(cell);
 	}
 	public update(fromX: number, toX: number): any {
 		throw 'Not implemented';

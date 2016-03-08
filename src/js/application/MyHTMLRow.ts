@@ -65,7 +65,7 @@ export default class MyHTMLRow extends Row {
 
 		// div.innerHTML = 'x: ' + pos.x + ', y: ' + pos.y;
 		
-		this.grid.getElement().appendChild(div);
+		this.grid.getContentElement().appendChild(div);
 		this.container = div;
 
 		super.render();

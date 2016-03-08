@@ -38,7 +38,7 @@ export default class FlickrDataSource extends DataSource {
 		});
 	}
 
-	onPhotosSuccess(data) {
+	public onPhotosSuccess(data) {
 		this.page = data.photos.page;
 		this.pages = data.photos.pages;
 		this.perpage = data.photos.perpage;

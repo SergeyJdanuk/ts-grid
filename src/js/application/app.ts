@@ -1,29 +1,47 @@
 import Application from '../core/Application';
 import MyHTMLGrid from './MyHTMLGrid';
 import MyCanvasGrid from './MyCanvasGrid';
+import Menu from './Menu';
 
 export default class MyApp extends Application {
 	private activeControl = null;
 	private controls = [];
-	private grid = new MyCanvasGrid('my-grid');
+	private grid = null;
+	private menu = null;
 
 	constructor() {
-		super(); 
+		super();
 		this.initializeEvents();
 
-		this.addControl(this.grid);
-		this.focusInControl('my-grid');
-		this.grid.on('loading:end', () => {
-			this.grid.render();
+		this.menu = new Menu('menu');
+		this.menu.load();
+		this.menu.render();
+
+		this.menu.on('pressed', (cell) => {
+			this.closeMenu();
+
+			let data = cell.getData();
+			if (data.id == 'html')
+				this.createHtmlGrid();
+			else if (data.id == 'canvas')
+				this.createCanvasGrid();
+
 		})
-		this.grid.load();
+
+		this.addControl(this.menu);
+		this.focusInControl('menu')
+		// this.focusInControl('my-grid');
+		// this.grid.on('loading:end', () => {
+		// 	this.grid.render();
+		// })
+		// this.grid.load();
 	}
 
-	initializeEvents() {
+	public initializeEvents() {
 		window.onkeydown = this.handleKeydown.bind(this);
 	}
 
-	handleKeydown(e) {
+	public handleKeydown(e) {
 		e.preventDefault();
 		
 		let control = this.getFocusedControl();
@@ -34,6 +52,27 @@ export default class MyApp extends Application {
 		}
 
 		control.handleKeydown(e);
+	}
+	public closeMenu() {
+		this.menu.hide();
+	}
+	public createHtmlGrid() {
+		let grid = new MyHTMLGrid('html-grid');
+		this.addControl(grid);
+		this.focusInControl('html-grid')
+		grid.on('loading:end', () => {
+			grid.render();
+		})
+		grid.load();
+	}
+	public createCanvasGrid() {
+		let grid = new MyHTMLGrid('canvas-grid');
+		this.addControl(grid);
+		this.focusInControl('canvas-grid')
+		grid.on('loading:end', () => {
+			grid.render();
+		})
+		grid.load();
 	}
 	public addControl(control: any) {
 		this.controls.push(control);
