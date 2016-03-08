@@ -2,6 +2,7 @@ import Application from '../core/Application';
 import MyHTMLGrid from './MyHTMLGrid';
 import MyCanvasGrid from './MyCanvasGrid';
 import Menu from './Menu';
+import KeyCodes from '../keycodes';
 
 export default class MyApp extends Application {
 	private activeControl = null;
@@ -25,7 +26,6 @@ export default class MyApp extends Application {
 				this.createHtmlGrid();
 			else if (data.id == 'canvas')
 				this.createCanvasGrid();
-
 		})
 
 		this.addControl(this.menu);
@@ -34,6 +34,32 @@ export default class MyApp extends Application {
 
 	public initializeEvents() {
 		window.onkeydown = this.handleKeydown.bind(this);
+		let elem = document.body;
+
+		if (elem.addEventListener) {
+			if ('onwheel' in document) {
+				// IE9+, FF17+, Ch31+
+				elem.addEventListener("wheel", this.onWheel.bind(this));
+			} else if ('onmousewheel' in document) {
+				// устаревший вариант события
+				elem.addEventListener("mousewheel", this.onWheel.bind(this));
+			} else {
+				// Firefox < 17
+				elem.addEventListener("MozMousePixelScroll", this.onWheel.bind(this));
+			}
+		}
+	}
+	public onWheel(e) {
+		e = e || window.event;
+
+		// wheelDelta не дает возможность узнать количество пикселей
+		var delta = e.deltaY || e.detail || e.wheelDelta;
+
+		if (delta < 0)
+			e.keyCode = KeyCodes.UP;
+		else
+			e.keyCode = KeyCodes.DOWN;
+		this.handleKeydown(event)
 	}
 
 	public handleKeydown(e) {
