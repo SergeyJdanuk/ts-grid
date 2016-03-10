@@ -105,7 +105,7 @@ gulp.task('templates', function() {
   return gulp.src(paths.templates)
     .pipe(ejs().on('error', gutil.log))
     .pipe(gulp.dest('dist'))
-    .pipe(notify({ message: 'Templates task complete' }));
+    // .pipe(notify({ message: 'Templates task complete' }));
 });
 
 // Clean up
@@ -185,7 +185,7 @@ gulp.task('browserify', function() {
         this.emit("end");
     })
     .pipe(source('index.js'))
-    // .pipe(streamify(uglify()))
+     .pipe(streamify(uglify()))
     .pipe(rename('index.js'))
     .pipe(gulp.dest('dist'));
 });
@@ -224,6 +224,9 @@ gulp.task('watch', ['connect', 'serve'], function() {
 
   // json
   gulp.watch('./src/**/*.json', ['json']);
+
+  // html
+  gulp.watch('./src/**/*.html', ['templates']);
   
   // Create LiveReload server
   livereload({ start: true });
