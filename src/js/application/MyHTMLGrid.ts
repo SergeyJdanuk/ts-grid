@@ -15,6 +15,8 @@ export default class MyHTMLGrid extends Grid {
     protected height = 720;
     protected rowHeight = 240;
     protected cellWidth = 182;
+    protected containerClassName = 'grid-container';
+    protected contentClassName = 'grid-content';
 
     public getElement() {
         return this.container;
@@ -89,13 +91,13 @@ export default class MyHTMLGrid extends Grid {
             content = document.createElement('div'),
             pos = this.getPosition();
 
-        div.setAttribute('class', 'grid-container');
+        div.setAttribute('class', this.containerClassName);
         div.style.position = 'absolute';
         div.style.width = this.getWidth() + 'px';
         div.style.height = this.getHeight() + 'px';
         div.style.overflow = 'hidden';
 
-        content.setAttribute('class', 'grid-content');
+        content.setAttribute('class', this.contentClassName);
     
         content.style.position = 'absolute';
         content.style.width = this.getWidth() + 'px';

@@ -3,8 +3,8 @@ import Promise from 'ts-promise'
 import Grid from '../modules/grid/Grid'
 import KeyCodes  from '../keycodes'
 import List from '../core/List'
-import MyHTMLRow from './MyHTMLRow'
-import MyHTMLCell from './MyHTMLCell'
+import Row from './MyCSS3DRow'
+import Cell from './MyCSS3DCell'
 import Animation from '../core/Animation'
 
 export default class MyCSS3DGrid extends Grid {
@@ -15,23 +15,28 @@ export default class MyCSS3DGrid extends Grid {
     protected height = 720;
     protected rowHeight = 240;
     protected cellWidth = 182;
+    protected oldTranslateY = 0;
 
     public getElement() {
         return this.container;
     }
     
     public createRow() {
-        return new MyHTMLRow(this, { height: this.rowHeight, cellWidth: this.cellWidth });
+        return new Row(this, { height: this.rowHeight, cellWidth: this.cellWidth });
     }
+
     public createCell(row, cellData) {
-        return new MyHTMLCell(row, cellData);
+        return new Cell(row, cellData);
     }
+
     public getContainer(): any {
         return this.container;
     }
+
     public getContentElement(): any {
         return this.contentEl;
     }
+
     public getChunk() {
         return this.dataSource.getPhotos();
     }
@@ -66,26 +71,47 @@ export default class MyCSS3DGrid extends Grid {
     }
     public update() {
         let el = this.getContentElement(),
-            f = parseInt(el.style.top, 10),
+            f = this.oldTranslateY,
             to = this.getPosition().y;
 
+        this.oldTranslateY = to;
+    
+        if (f == to) {
+            return { then: function(cb) { cb(); } }
+        }
+
+        this.isAnimation = true;
         return new Promise((resolve, reject) => {
-            if (f == to)
+
+            let transitionend = () => {
+                el.removeEventListener('transitionend', transitionend);
+                this.isAnimation = false;
                 return resolve(1);
+            }
 
-            this.isAnimation = true;
+            let webkitTransitionEnd = () => {
+                el.removeEventListener('webkitTransitionEnd', webkitTransitionEnd);
+                this.isAnimation = false;
+                return resolve(1);
+            }
 
-            Animation(f, to, 280, (result, progress) => {
-                el.style.top = result + 'px'
-                if (progress == 1) {
-                    this.isAnimation = false
-                    resolve(1);
-                }
-            })
+            let oTransitionEnd = () => {
+                el.removeEventListener('oTransitionEnd', oTransitionEnd);
+                this.isAnimation = false;
+                return resolve(1);
+            }
+
+            el.addEventListener('transitionend', transitionend, false);
+            el.addEventListener('webkitTransitionEnd', webkitTransitionEnd, false);
+            el.addEventListener('oTransitionEnd', oTransitionEnd, false);
+
+            el.style.transform = 'translateY(' + to + 'px)';
+            el.style.webkitTransform = '-webkit-translateY(' + to + 'px)';
+            el.style.oTransform = '-o-translateY(' + to + 'px)';
         });
     }
-    public render(parent?: any) { 
 
+    public render(parent?: any) {
         let div = document.createElement('div'),
             content = document.createElement('div'),
             pos = this.getPosition();

@@ -7,6 +7,7 @@ import Promise from 'ts-promise'
 
 export default class MyHTMLRow extends Row {
     private container = null;
+    protected containerClassName = 'row-container';
 
     public getElement() {
         return this.container;
@@ -54,7 +55,7 @@ export default class MyHTMLRow extends Row {
         let div = document.createElement('div'),
             pos = this.getPosition();
         
-        div.setAttribute('class', 'row-container');
+        div.setAttribute('class', this.containerClassName);
         // div.style.webkitTransition = 'left 280ms';
         // div.style.transition = 'left 280ms';
         div.style.position = 'absolute';

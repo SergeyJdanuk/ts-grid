@@ -7,6 +7,7 @@ import Promise from 'ts-promise'
 
 export default class MyHTMLRow extends Row {
     private container = null;
+    protected oldTranslateX = 0;
 
     public getElement() {
         return this.container;
@@ -32,22 +33,32 @@ export default class MyHTMLRow extends Row {
             return { then: function(cb) { cb() } };
 
         let el = this.getElement(),
-            f = parseInt(el.style.left, 10),
+            f = this.oldTranslateX,
             to = this.getPosition().x;
 
-        let promise = new Promise( (resolve, reject) => {
-            this.isAnimation = true;
-            
-            Animation(f, to, 280, (result, progress) => {
-                el.style.left = result + 'px'
-                if (progress == 1) {
-                    this.isAnimation = false
-                    resolve(1);
-                }
-            })
+        this.oldTranslateX = to;
+
+        this.isAnimation = true;
+        return new Promise((resolve, reject) => {
+
+            let transitionEnd = () => {
+                el.removeEventListener('webkitTransitionEnd', transitionEnd);
+                this.isAnimation = false;
+                return resolve(1);
+            }
+
+            let oTransitionEnd = () => {
+                el.removeEventListener('oTransitionEnd', oTransitionEnd);
+                this.isAnimation = false;
+                return resolve(1);
+            }
+
+            el.addEventListener('webkitTransitionEnd', transitionEnd, false);
+            el.addEventListener('oTransitionEnd', oTransitionEnd, false);
+
+            el.style.transform = 'translateX(' + to + 'px)';
+            el.style.oTransform = 'translateX(' + to + 'px)';
         });
-        
-        return promise;
     }
     
     public render() {
@@ -55,15 +66,12 @@ export default class MyHTMLRow extends Row {
             pos = this.getPosition();
         
         div.setAttribute('class', 'row3d-container');
-         //div.style.webkitTransition = 'left 280ms';
-        // div.style.transition = 'left 280ms';
+
         div.style.position = 'absolute';
         div.style.width = this.getWidth() + 'px';
         div.style.height = this.getHeight() + 'px';
         div.style.left = pos.x + 'px';
         div.style.top = pos.y + 'px';
-
-        // div.innerHTML = 'x: ' + pos.x + ', y: ' + pos.y;
         
         this.grid.getContentElement().appendChild(div);
         this.container = div;
