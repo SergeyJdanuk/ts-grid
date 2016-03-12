@@ -42,6 +42,12 @@ class MenuCell extends MyHTMLCell {
 
 export default class Menu extends MyHTMLGrid {
     protected rowHeight = 240;
+    protected data = null;
+
+    constructor(name, data) {
+        super(name);
+        this.data = data;
+    }
 
     public createCell(row, cellData) {
         return new MenuCell(row, cellData);
@@ -50,8 +56,9 @@ export default class Menu extends MyHTMLGrid {
         return new MenuRow(this);
     }
     public load() {
-        this.appendRow([{ title: 'Grid: HTML', id: 'html' }]); 
-        this.appendRow([{ title: 'Grid: Canvas', id: 'canvas' }]);
+        for(var i in this.data) {
+            this.appendRow([this.data[i]]);
+        }
     }
     public update(): any {
         return { then: (cb) => { cb() } }
