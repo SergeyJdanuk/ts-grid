@@ -24,7 +24,7 @@
     "gulp-prettify": "~0.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-rev-all": "~0.8.22",
-    "gulp-ruby-sass": "~2.0.6",
+    "gulp-ruby-sass": "^2.0.6",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-streamify": "^1.0.2",
     "gulp-tsc": "^1.1.5",

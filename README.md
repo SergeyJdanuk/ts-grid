@@ -1,4 +1,5 @@
 ## Install
+- install sass http://sass-lang.com/install
 - git clone https://github.com/SergeyJdanuk/ts-grid.git grid
 - cd grid
 - npm install
