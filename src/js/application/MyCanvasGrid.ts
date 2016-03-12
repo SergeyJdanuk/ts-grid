@@ -16,10 +16,55 @@ export default class MyCanvasGrid extends Grid {
     protected cellWidth = 182;
     protected context = null;
     public deltaY = 0;
+    protected rafID = 0;
 
     constructor(name: string, parent?: any) {
         super(name);
         this.createCanvas(parent);
+        this.initRAF();
+
+        window.requestAnimationFrame((/* time */ time) => {
+            // time ~= +new Date // the unix time
+            this.render();
+        });
+    }
+    public initRAF() {
+        (function() {
+            var lastTime = 0;
+            var vendors = ['webkit', 'moz', 'o'];
+            for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+                window.cancelAnimationFrame =
+                    window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+            }
+
+            if (!window.requestAnimationFrame)
+                window.requestAnimationFrame = function(callback) {
+                    var currTime = new Date().getTime();
+                    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                    var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                        timeToCall);
+                    lastTime = currTime + timeToCall;
+                    return id;
+                };
+
+            if (!window.cancelAnimationFrame)
+                window.cancelAnimationFrame = function(id) {
+                    clearTimeout(id);
+                };
+        } ());
+    }
+    startRAF() {
+        console.log('startRAF');
+        this.rafID = window.requestAnimationFrame((/* time */ time) => {
+            console.log('render');
+            // time ~= +new Date // the unix time
+            this.render();
+        });
+    }
+    stopRAF() {
+        console.log('stopRAF');
+        window.cancelAnimationFrame(this.rafID);
     }
     public getElement() {
         return this.container;
@@ -92,18 +137,20 @@ export default class MyCanvasGrid extends Grid {
         if (fromY == toY)
             return { then: function(cb) { cb() } };
 
+        this.isAnimation = true;
+        this.startRAF();
         return {
             then: (cb) => {
 
-                this.isAnimation = true;
                 Animation(fromY, toY, 280, (result, progress) => {
                     this.deltaY = result;
 
                     if (progress < 1)
-                        return this.render();
+                        return;
 
                     this.isAnimation = false
-                    this.render();
+                    // this.render();
+                    this.stopRAF();
                     cb();
                 })
             }
