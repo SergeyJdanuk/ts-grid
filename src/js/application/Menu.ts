@@ -10,6 +10,15 @@ import Animation from '../core/Animation'
 class MenuRow extends MyHTMLRow {
     protected height = 70;
     protected cellWidth = 372;
+    protected containerClassName = 'menu-row-container';
+
+    render() {
+        super.render();
+        let container = this.getElement();
+        container.style.position = 'static';
+        container.style.width = 'auto';
+        container.style.height = 'auto';
+    }
 }
 class MenuCell extends MyHTMLCell {
     public hide() {
@@ -22,7 +31,7 @@ class MenuCell extends MyHTMLCell {
             pos = this.getPosition();
 
         div.setAttribute('class', 'cell-container' + (this.focused ? ' focused' : ''));
-        div.style.position = 'absolute';
+        div.style.position = 'ralative';
         div.style.width = this.getWidth() + 'px';
         div.style.height = this.row.getHeight() + 'px';
         div.style.left = pos.x + 'px';
@@ -42,6 +51,14 @@ class MenuCell extends MyHTMLCell {
 
 export default class Menu extends MyHTMLGrid {
     protected rowHeight = 240;
+    protected data = null;
+    protected containerClassName = 'menu-container';
+    protected contentClassName = 'menu-content';
+
+    constructor(name, data) {
+        super(name);
+        this.data = data;
+    }
 
     public createCell(row, cellData) {
         return new MenuCell(row, cellData);
@@ -50,8 +67,9 @@ export default class Menu extends MyHTMLGrid {
         return new MenuRow(this);
     }
     public load() {
-        this.appendRow([{ title: 'Grid: HTML', id: 'html' }]); 
-        this.appendRow([{ title: 'Grid: Canvas', id: 'canvas' }]);
+        for(var i in this.data) {
+            this.appendRow([this.data[i]]);
+        }
     }
     public update(): any {
         return { then: (cb) => { cb() } }
@@ -63,13 +81,19 @@ export default class Menu extends MyHTMLGrid {
     public render(parent?: any) {
         super.render();
 
-        let el = this.getContentElement();
+        let wrapper = document.createElement('div'),
+            container = this.getContainer(),
+            content = this.getContentElement();
 
-        el.setAttribute('class', 'menu-container');
-        el.style.position = 'absolute';
-        el.style.width = 'auto';
-        el.style.height = 'auto';
-        el.style.top = '50%';
-        el.style.left = '35%';
+        console.log(content);
+        content.style.position = 'inherit';
+        content.style.width = '300px';
+        content.style.height = 'auto';
+        content.style.margin = '0 auto';
+
+        wrapper.setAttribute('class', 'menu-wrapper');
+        container.appendChild(wrapper);
+
+        wrapper.appendChild(content);
     }
 }

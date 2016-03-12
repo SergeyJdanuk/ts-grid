@@ -185,7 +185,7 @@ gulp.task('browserify', function() {
         this.emit("end");
     })
     .pipe(source('index.js'))
-     .pipe(streamify(uglify()))
+    // .pipe(streamify(uglify()))
     .pipe(rename('index.js'))
     .pipe(gulp.dest('dist'));
 });

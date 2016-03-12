@@ -1,6 +1,7 @@
 import Application from '../core/Application';
 import MyHTMLGrid from './MyHTMLGrid';
 import MyCanvasGrid from './MyCanvasGrid';
+import MyCSS3DGrid from './MyCSS3DGrid';
 import Menu from './Menu';
 import KeyCodes from '../keycodes';
 
@@ -14,7 +15,11 @@ export default class MyApp extends Application {
         super();
         this.initializeEvents();
 
-        this.menu = new Menu('menu');
+        this.menu = new Menu('menu', [
+            { title: 'Grid: HTML', id: 'html' },
+            { title: 'Grid: Canvas', id: 'canvas' },
+            { title: 'Grid: CSS 3D', id: 'css3d' }
+        ]);
         this.menu.load();
         this.menu.render();
 
@@ -26,7 +31,9 @@ export default class MyApp extends Application {
                 this.createHtmlGrid();
             else if (data.id == 'canvas')
                 this.createCanvasGrid();
-        })
+            else if (data.id == 'css3d')
+                this.createCSS3DGrid();
+        });
 
         this.addControl(this.menu);
         this.focusInControl('menu')
@@ -80,19 +87,28 @@ export default class MyApp extends Application {
     public createHtmlGrid() {
         let grid = new MyHTMLGrid('html-grid');
         this.addControl(grid);
-        this.focusInControl('html-grid')
+        this.focusInControl('html-grid');
         grid.on('loading:end', () => {
             grid.render();
-        })
+        });
         grid.load();
     }
     public createCanvasGrid() {
         let grid = new MyCanvasGrid('canvas-grid');
         this.addControl(grid);
-        this.focusInControl('canvas-grid')
+        this.focusInControl('canvas-grid');
         grid.on('loading:end', () => {
             grid.render();
-        })
+        });
+        grid.load();
+    }
+    public createCSS3DGrid() {
+        let grid = new MyCSS3DGrid('css3d');
+        this.addControl(grid);
+        this.focusInControl('css3d');
+        grid.on('loading:end', () => {
+            grid.render();
+        });
         grid.load();
     }
     public addControl(control: any) {
