@@ -17,16 +17,12 @@ export default class MyCanvasGrid extends Grid {
     protected context = null;
     public deltaY = 0;
     protected rafID = 0;
+    protected isRAFEnabled = false;
 
     constructor(name: string, parent?: any) {
         super(name);
         this.createCanvas(parent);
         this.initRAF();
-
-        window.requestAnimationFrame((/* time */ time) => {
-            // time ~= +new Date // the unix time
-            this.render();
-        });
     }
     public initRAF() {
         (function() {
@@ -55,15 +51,13 @@ export default class MyCanvasGrid extends Grid {
         } ());
     }
     startRAF() {
-        console.log('startRAF');
-        this.rafID = window.requestAnimationFrame((/* time */ time) => {
-            console.log('render');
-            // time ~= +new Date // the unix time
-            this.render();
+        let _this = this;
+        this.rafID = window.requestAnimationFrame(function raf() {
+            window.requestAnimationFrame(raf);
+            _this.render();
         });
     }
     stopRAF() {
-        console.log('stopRAF');
         window.cancelAnimationFrame(this.rafID);
     }
     public getElement() {
@@ -138,20 +132,27 @@ export default class MyCanvasGrid extends Grid {
             return { then: function(cb) { cb() } };
 
         this.isAnimation = true;
-        this.startRAF();
+
+        if (this.isRAFEnabled)
+            this.startRAF();
+
         return {
             then: (cb) => {
 
                 Animation(fromY, toY, 280, (result, progress) => {
                     this.deltaY = result;
 
-                    if (progress < 1)
-                        return;
+                    if (!this.isRAFEnabled)
+                        this.render();
 
-                    this.isAnimation = false
-                    // this.render();
-                    this.stopRAF();
-                    cb();
+                    if (progress == 1) {
+
+                        this.isAnimation = false
+                        
+                        if (this.isRAFEnabled)
+                            this.stopRAF();
+                        cb();
+                    }
                 })
             }
         };

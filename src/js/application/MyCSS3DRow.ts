@@ -41,8 +41,14 @@ export default class MyHTMLRow extends Row {
         this.isAnimation = true;
         return new Promise((resolve, reject) => {
 
-            let transitionEnd = () => {
-                el.removeEventListener('webkitTransitionEnd', transitionEnd);
+            let transitionend = () => {
+                el.removeEventListener('transitionend', transitionend);
+                this.isAnimation = false;
+                return resolve(1);
+            }
+
+            let webkitTransitionEnd = () => {
+                el.removeEventListener('webkitTransitionEnd', webkitTransitionEnd);
                 this.isAnimation = false;
                 return resolve(1);
             }
@@ -53,11 +59,13 @@ export default class MyHTMLRow extends Row {
                 return resolve(1);
             }
 
-            el.addEventListener('webkitTransitionEnd', transitionEnd, false);
+            el.addEventListener('transitionend', transitionend, false);
+            el.addEventListener('webkitTransitionEnd', webkitTransitionEnd, false);
             el.addEventListener('oTransitionEnd', oTransitionEnd, false);
 
             el.style.transform = 'translateX(' + to + 'px)';
-            el.style.oTransform = 'translateX(' + to + 'px)';
+            el.style.webkitTransform = '-webkit-translateX(' + to + 'px)';
+            el.style.oTransform = '-o-translateX(' + to + 'px)';
         });
     }
     

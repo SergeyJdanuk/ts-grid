@@ -85,7 +85,6 @@ export default class Menu extends MyHTMLGrid {
             container = this.getContainer(),
             content = this.getContentElement();
 
-        console.log(content);
         content.style.position = 'inherit';
         content.style.width = '300px';
         content.style.height = 'auto';
